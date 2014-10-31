@@ -1,0 +1,29 @@
+# Maintainer: Michael Hansen <zrax0111 gmail com>
+
+_rev=r10
+_gdkver=xe22
+_sdkint=19
+pkgname=android-glass-gdk-${_sdkint}
+pkgver=${_gdkver}_${_rev}
+pkgrel=1
+pkgdesc="Google Glass Development Kit Preview, API-${_sdkint}"
+arch=('any')
+url='https://developers.google.com/glass/develop/gdk/index'
+license=('custom')
+depends=("android-platform-${_sdkint}")
+options=('!strip')
+source=("http://dl.google.com/glass/${_gdkver}/google-gdk.zip"
+        'source.properties.xz')
+sha1sums=('6eb5f9c5f62757eb206c9fed937b343c842c0f77'
+          '15ef5b28db140ae59bc5dfeb9509f31e551a0e6b')
+
+package() {
+    _addons="${pkgdir}/opt/android-sdk/add-ons"
+    mkdir -p "${_addons}"
+    mv "${srcdir}/google-gdk" "${_addons}/addon-google_gdk-google-${_sdkint}"
+
+    chmod -R ugo+rX "${pkgdir}/opt"
+
+    xz -cd "${srcdir}/source.properties.xz" \
+         > "${_addons}/addon-google_gdk-google-${_sdkint}/source.properties"
+}
